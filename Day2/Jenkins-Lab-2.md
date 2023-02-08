@@ -2,11 +2,37 @@
 
 ## Day2
 
-![Lab2-2 q1.png](./screenshots/day-1-q8-3.png "Lab2-2 q1.png")
+---
+
+## 4- configure jenkins image to run docker commands on your host docker daemon
+
+```docker
+# Use the official Jenkins image as the base
+FROM jenkins/jenkins:lts
+
+# Set the root user as the default user for the image
+USER root
+
+# Install the Docker client
+RUN apt-get update && apt-get install -y lsb-release
+RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
+  https://download.docker.com/linux/debian/gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) \
+  signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
+  https://download.docker.com/linux/debian \
+  $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+RUN apt-get update && apt-get install -y docker-ce-cli
+RUN groupadd docker
+RUN usermod -aG docker jenkins
+
+
+```
+
+## 5- create CI/CD for this repo <https://github.com/mahmoud254/jenkins_nodejs_example.git>
+
+![Lab2-2 q1.png](./screenshots/lab2-q2.png "Lab2-2 q1.png")
 
 ---
-4- configure jenkins image to run docker commands on your hos docker daemon
-5- create CI/CD for this repo <https://github.com/mahmoud254/jenkins_nodejs_example.git>
 #################
 1- create docker file to build image for jenkins slave
 2- create container from this image and configure ssh
@@ -29,3 +55,7 @@ on the load balancer
 12- test your application by calling loadbalancer_url/db and /redis
 13- create documentation illustrating your steps with screenshots
 ###############################################
+
+
+sudo apt-get -y install default-jdk
+java -version
